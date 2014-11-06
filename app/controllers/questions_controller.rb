@@ -12,6 +12,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = @poll.questions.build
+    7.times { @question.possible_answers.build }
   end
 
   def edit
@@ -57,7 +58,7 @@ class QuestionsController < ApplicationController
     end
 
     def question_params
-      params.require(:question).permit(:title, :kind, :poll_id)
+      params.require(:question).permit(:title, :kind, :poll_id, { possible_answers_attributes: [:title, :question_id] })
     end
 
     def set_poll
@@ -65,9 +66,6 @@ class QuestionsController < ApplicationController
     end
 
     def set_kind_questions
-      @kind_options = [
-        ["Open Answer", "open"],
-        ["Multiple Choice", "choice"]
-      ]
+      @kind_options = [ [ "Open answer", "open" ], [ "Choice", "choice"] ]
     end
 end
